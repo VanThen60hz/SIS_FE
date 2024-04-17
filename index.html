@@ -175,8 +175,9 @@
                                         <i class="icon-random"></i><b>65%</b>
                                         <p class="text-muted">Growth</p> </a
                                     ><a href="#" class="btn-box big span4">
-                                        <i class="icon-user"></i><b>15</b>
-                                        <p class="text-muted">New Users</p> </a
+                                        <i class="icon-user"></i
+                                        ><b id="total-user">15</b>
+                                        <p class="text-muted">Total User</p> </a
                                     ><a href="#" class="btn-box big span4">
                                         <i class="icon-money"></i><b>15,152</b>
                                         <p class="text-muted">Profit</p>
@@ -238,61 +239,32 @@
                                     >
                                         <li>
                                             <p>
-                                                <strong>Windows 8</strong>
+                                                <strong>Male</strong>
                                                 <span
                                                     class="pull-right small muted"
+                                                    id="male-ratio"
                                                     >78%</span
                                                 >
                                             </p>
                                             <div class="progress tight">
                                                 <div
                                                     class="bar"
-                                                    style="width: 78%"
+                                                    id="male-ratio-width"
                                                 ></div>
                                             </div>
                                         </li>
                                         <li>
                                             <p>
-                                                <strong>Mac</strong>
+                                                <strong>Female</strong>
                                                 <span
                                                     class="pull-right small muted"
-                                                    >56%</span
-                                                >
+                                                    id="female-ratio"
+                                                ></span>
                                             </p>
                                             <div class="progress tight">
                                                 <div
                                                     class="bar bar-success"
-                                                    style="width: 56%"
-                                                ></div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <p>
-                                                <strong>Linux</strong>
-                                                <span
-                                                    class="pull-right small muted"
-                                                    >44%</span
-                                                >
-                                            </p>
-                                            <div class="progress tight">
-                                                <div
-                                                    class="bar bar-warning"
-                                                    style="width: 44%"
-                                                ></div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <p>
-                                                <strong>iPhone</strong>
-                                                <span
-                                                    class="pull-right small muted"
-                                                    >67%</span
-                                                >
-                                            </p>
-                                            <div class="progress tight">
-                                                <div
-                                                    class="bar bar-danger"
-                                                    style="width: 67%"
+                                                    id="female-ratio-width"
                                                 ></div>
                                             </div>
                                         </li>
@@ -819,5 +791,9 @@
             type="text/javascript"
         ></script>
         <script src="/Scripts/common.js" type="text/javascript"></script>
+        <script type="module" src="./js/dashboard.js"></script>
+
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script></script>
     </body>
 </html>

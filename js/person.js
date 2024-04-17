@@ -3,16 +3,25 @@ export const findAll = async (pageNumber, pageSize) => {
         let response = await axios.get(
             `http://localhost:8080/merge-person?pageNumber=${pageNumber}&pageSize=${pageSize}`,
         );
-        return response.data.data; // Access the array in the 'data' property of the 'data' object
+        return response.data; // Access the array in the 'data' property of the 'data' object
     } catch (e) {
         console.log(e);
     }
 };
 
 const fetchDataAndAddToTable = async (pageNumber, pageSize) => {
-    const listPerson = await findAll(pageNumber, pageSize);
-    console.log(listPerson);
-    addListToTable(listPerson, "data");
+    const data = await findAll(pageNumber, pageSize);
+
+    const currentPersonsElement = document.getElementById("current-persons");
+    const totalSizeElement = document.getElementById("total-size");
+
+    currentPersonsElement.innerText = `${(pageNumber - 1) * 10 + 1} - ${
+        pageNumber * 10 + 1
+    }`;
+    totalSizeElement.innerText = data.total_size;
+
+    console.log(data.data);
+    addListToTable(data.data, "data");
 };
 
 export const addListToTable = (list, tableId) => {
@@ -43,22 +52,19 @@ export const addListToTable = (list, tableId) => {
     }
 };
 
-let pageNumber = 1; // Initial page number
+let pageNumber = 1;
 const pageSize = 10;
 
 fetchDataAndAddToTable(pageNumber, pageSize);
 
-// Thêm lắng nghe sự kiện click cho nút "Next"
 document.getElementById("nextPage").addEventListener("click", () => {
-    pageNumber++; // Tăng pageNumber lên 1
+    pageNumber++;
     fetchDataAndAddToTable(pageNumber, pageSize);
 });
 
-// Thêm lắng nghe sự kiện click cho nút "Previous"
 document.getElementById("previousPage").addEventListener("click", () => {
     if (pageNumber > 1) {
-        // Đảm bảo pageNumber không nhỏ hơn 1
-        pageNumber--; // Giảm pageNumber xuống 1
+        pageNumber--;
         fetchDataAndAddToTable(pageNumber, pageSize);
     }
 });
