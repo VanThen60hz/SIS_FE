@@ -20,7 +20,6 @@ const fetchDataAndAddToTable = async (pageNumber, pageSize) => {
     }`;
     totalSizeElement.innerText = data.total_size;
 
-    console.log(data.data);
     addListToTable(data.data, "data");
 };
 
@@ -67,4 +66,40 @@ document.getElementById("previousPage").addEventListener("click", () => {
         pageNumber--;
         fetchDataAndAddToTable(pageNumber, pageSize);
     }
+});
+
+export const addDataToTable = (data, tableId) => {
+    const tbody = document.getElementById(tableId);
+    if (tbody) {
+        // Create row for new data
+        const newRow = document.createElement("tr");
+        Object.values(data.personal).forEach((value) => {
+            const td = document.createElement("td");
+            td.textContent = value;
+            newRow.appendChild(td);
+        });
+
+        // Insert new row below the header row
+        const headerRow = tbody.querySelector("tr:first-child");
+        if (headerRow) {
+            tbody.insertBefore(newRow, headerRow.nextSibling);
+        } else {
+            console.error(`Header row not found in table with id ${tableId}.`);
+        }
+    } else {
+        console.error(`Table body with id ${tableId} not found.`);
+    }
+};
+
+// Enable pusher logging - don't include this in production
+Pusher.logToConsole = true;
+
+var pusher = new Pusher("a359a59a30b4ddb07bb5", {
+    cluster: "ap1",
+});
+
+var channel = pusher.subscribe("GoSIS");
+channel.bind("personal-created", function (data) {
+    console.log(data);
+    addDataToTable(data, "data");
 });
