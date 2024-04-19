@@ -12,16 +12,20 @@ const updateGenderRatio = async () => {
     if (data) {
         const maleRatioElement = document.getElementById("male-ratio");
         const femaleRatioElement = document.getElementById("female-ratio");
+        const otherRatioElement = document.getElementById("other-ratio");
         const totalUserElement = document.getElementById("total-user");
 
         const maleRatioElementPercent =
             document.getElementById("male-ratio-width");
         const femaleRatioElementPercent =
             document.getElementById("female-ratio-width");
+        const otherRatioElementPercent =
+            document.getElementById("other-ratio-width");
 
         // Tính tỷ lệ nam và nữ từ dữ liệu JSON
         const malePercentage = data.male;
         const femalePercentage = data.female;
+        const otherPercentage = data.other;
         const totalUser = data.total;
 
         // Cập nhật HTML với dữ liệu mới
@@ -30,6 +34,9 @@ const updateGenderRatio = async () => {
 
         femaleRatioElement.textContent = `${femalePercentage}%`;
         femaleRatioElementPercent.style.width = `${femalePercentage}%`;
+
+        otherRatioElement.textContent = `${otherPercentage}%`;
+        otherRatioElementPercent.style.width = `${otherPercentage}%`;
 
         totalUserElement.textContent = `${totalUser}`;
     }

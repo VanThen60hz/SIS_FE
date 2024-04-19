@@ -41,7 +41,7 @@ export const addListToTable = (list, tableId) => {
             const tr = document.createElement("tr");
             Object.values(item).forEach((value) => {
                 const td = document.createElement("td");
-                td.textContent = value;
+                td.textContent = value !== null ? value : "";
                 tr.appendChild(td);
             });
             tbody.appendChild(tr);
@@ -75,7 +75,7 @@ export const addDataToTable = (data, tableId) => {
         const newRow = document.createElement("tr");
         Object.values(data.personal).forEach((value) => {
             const td = document.createElement("td");
-            td.textContent = value;
+            td.textContent = value !== null ? value : "";
             newRow.appendChild(td);
         });
 
