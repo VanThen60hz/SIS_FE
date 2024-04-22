@@ -42,5 +42,35 @@ const updateGenderRatio = async () => {
     }
 };
 
+export const showModalRealTime = (data, tableId) => {
+    // Hiển thị modal
+    $("#realtimeModal").modal("show");
+
+    // Điền tên đầy đủ vào phần realtime-fullname
+    var fullName = data.personal.First_Name + " " + data.personal.Last_Name;
+    document.getElementById("realtime-fullname").innerText = fullName;
+
+    // Lấy và cộng giá trị của phần tử total-size lên 1
+    var totalUserElement = document.getElementById("total-user");
+    if (totalUserElement) {
+        var totalUser = parseInt(totalUserElement.innerText);
+        totalUserElement.innerText = totalUser + 1;
+    } else {
+        console.error("Element with id 'total-user' not found.");
+    }
+};
+
 // Gọi hàm để cập nhật dữ liệu ban đầu
 await updateGenderRatio();
+
+// Enable pusher logging - don't include this in production
+Pusher.logToConsole = true;
+
+var pusher = new Pusher("a359a59a30b4ddb07bb5", {
+    cluster: "ap1",
+});
+
+var channel = pusher.subscribe("GoSIS");
+channel.bind("personal-created", function (data) {
+    showModalRealTime(data, "data");
+});

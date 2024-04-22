@@ -86,6 +86,24 @@ export const addDataToTable = (data, tableId) => {
         } else {
             console.error(`Header row not found in table with id ${tableId}.`);
         }
+
+        // Hiển thị modal
+        $("#realtimeModal").modal("show");
+
+        // Điền tên đầy đủ vào phần realtime-fullname
+        var fullName = data.personal.First_Name + " " + data.personal.Last_Name;
+        document.getElementById("realtime-fullname").innerText = fullName;
+
+        // Lấy và cộng giá trị của phần tử total-size lên 1
+        var totalSizeElement = document.getElementById("total-size");
+        if (totalSizeElement) {
+            var totalSize = parseInt(totalSizeElement.innerText);
+            totalSizeElement.innerText = totalSize + 1;
+        } else {
+            console.error("Element with id 'total-size' not found.");
+        }
+
+        //
     } else {
         console.error(`Table body with id ${tableId} not found.`);
     }

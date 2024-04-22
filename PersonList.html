@@ -249,6 +249,45 @@
                 </div>
             </div>
 
+            <!-- Real time modal -->
+            <div
+                class="modal fade"
+                id="realtimeModal"
+                tabindex="-1"
+                aria-hidden="true"
+            >
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="tlName">Thêm mới</h5>
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            ></button>
+                        </div>
+                        <div class="modal-body">
+                            Phát hiện đã thêm mới 1 person tên là
+                            <span
+                                class="text-success"
+                                id="realtime-fullname"
+                            ></span
+                            >?
+                            <input type="hidden" name="id" id="delId" />
+                        </div>
+                        <div class="modal-footer">
+                            <button
+                                type="button"
+                                class="btn btn-secondary"
+                                data-bs-dismiss="modal"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!--/.container-->
         </div>
 
@@ -287,6 +326,5 @@
 
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
-        <script></script>
     </body>
 </html>
