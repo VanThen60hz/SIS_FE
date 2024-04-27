@@ -91,7 +91,12 @@ export const addDataToTable = (data, tableId) => {
         $("#realtimeModal").modal("show");
 
         // Điền tên đầy đủ vào phần realtime-fullname
-        var fullName = data.personal.First_Name + " " + data.personal.Last_Name;
+        var firstName = data.personal.First_Name || data.personal.firstName; // Sử dụng toán tử ba ngôi để kiểm tra và thay thế giá trị nếu cần
+
+        var lastName = data.personal.Last_Name || data.personal.lastName; // Sử dụng toán tử ba ngôi để kiểm tra và thay thế giá trị nếu cần
+
+        var fullName = firstName + " " + lastName;
+
         document.getElementById("realtime-fullname").innerText = fullName;
 
         // Lấy và cộng giá trị của phần tử total-size lên 1
