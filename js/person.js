@@ -27,23 +27,62 @@ export const addListToTable = (list, tableId) => {
     const tbody = document.getElementById(tableId);
     tbody.innerHTML = "";
     if (tbody) {
-        // Create header row
         const headerRow = document.createElement("tr");
+
+        // Thêm các cột từ dữ liệu trong đối tượng đầu tiên của danh sách list
         Object.keys(list[0]).forEach((key) => {
             const th = document.createElement("th");
             th.textContent = key;
             headerRow.appendChild(th);
         });
+
+        // Thêm cột "Edit" và "Delete" vào tiêu đề
+        const editTh = document.createElement("th");
+        editTh.textContent = "Edit";
+        headerRow.appendChild(editTh);
+
+        const deleteTh = document.createElement("th");
+        deleteTh.textContent = "Delete";
+        headerRow.appendChild(deleteTh);
+
         tbody.appendChild(headerRow);
 
-        // Create rows for data
+        // Thêm dữ liệu từ danh sách vào bảng
         list.forEach((item) => {
             const tr = document.createElement("tr");
+
+            // Thêm các ô dữ liệu từ mỗi item
             Object.values(item).forEach((value) => {
                 const td = document.createElement("td");
                 td.textContent = value !== null ? value : "";
                 tr.appendChild(td);
             });
+
+            // Tạo nút "Edit" và "Delete" bọc trong thẻ <a> có class của Bootstrap
+            const editTd = document.createElement("td");
+            const editLink = document.createElement("a");
+            editLink.href = `../EditBoth.html?data=${JSON.stringify(item)}`;
+            editLink.classList.add("btn", "btn-primary"); // Thêm class của Bootstrap
+            editLink.textContent = "Edit";
+            editLink.onclick = () => {
+                // Xử lý sự kiện chỉnh sửa ở đây
+                console.log("Edit button clicked for:", item);
+            };
+            editTd.appendChild(editLink);
+            tr.appendChild(editTd);
+
+            const deleteTd = document.createElement("td");
+            const deleteLink = document.createElement("a");
+            deleteLink.href = "#"; // Đặt href tùy ý
+            deleteLink.classList.add("btn", "btn-danger"); // Thêm class của Bootstrap
+            deleteLink.textContent = "Delete";
+            deleteLink.onclick = () => {
+                // Xử lý sự kiện xóa ở đây
+                console.log("Delete button clicked for:", item);
+            };
+            deleteTd.appendChild(deleteLink);
+            tr.appendChild(deleteTd);
+
             tbody.appendChild(tr);
         });
     } else {
@@ -71,7 +110,6 @@ document.getElementById("previousPage").addEventListener("click", () => {
 export const addDataToTable = (data, tableId) => {
     const tbody = document.getElementById(tableId);
     if (tbody) {
-        // Create row for new data
         const newRow = document.createElement("tr");
         Object.values(data.personal).forEach((value) => {
             const td = document.createElement("td");
@@ -79,7 +117,6 @@ export const addDataToTable = (data, tableId) => {
             newRow.appendChild(td);
         });
 
-        // Insert new row below the header row
         const headerRow = tbody.querySelector("tr:first-child");
         if (headerRow) {
             tbody.insertBefore(newRow, headerRow.nextSibling);
@@ -87,19 +124,16 @@ export const addDataToTable = (data, tableId) => {
             console.error(`Header row not found in table with id ${tableId}.`);
         }
 
-        // Hiển thị modal
         $("#realtimeModal").modal("show");
 
-        // Điền tên đầy đủ vào phần realtime-fullname
-        var firstName = data.personal.First_Name || data.personal.firstName; // Sử dụng toán tử ba ngôi để kiểm tra và thay thế giá trị nếu cần
+        var firstName = data.personal.First_Name || data.personal.firstName;
 
-        var lastName = data.personal.Last_Name || data.personal.lastName; // Sử dụng toán tử ba ngôi để kiểm tra và thay thế giá trị nếu cần
+        var lastName = data.personal.Last_Name || data.personal.lastName;
 
         var fullName = firstName + " " + lastName;
 
         document.getElementById("realtime-fullname").innerText = fullName;
 
-        // Lấy và cộng giá trị của phần tử total-size lên 1
         var totalSizeElement = document.getElementById("total-size");
         if (totalSizeElement) {
             var totalSize = parseInt(totalSizeElement.innerText);
@@ -107,14 +141,11 @@ export const addDataToTable = (data, tableId) => {
         } else {
             console.error("Element with id 'total-size' not found.");
         }
-
-        //
     } else {
         console.error(`Table body with id ${tableId} not found.`);
     }
 };
 
-// Enable pusher logging - don't include this in production
 Pusher.logToConsole = true;
 
 var pusher = new Pusher("a359a59a30b4ddb07bb5", {
@@ -122,7 +153,12 @@ var pusher = new Pusher("a359a59a30b4ddb07bb5", {
 });
 
 var channel = pusher.subscribe("GoSIS");
-channel.bind("personal-created", function (data) {
+channel.bind("HR-person-created", function (data) {
+    console.log(data);
+    addDataToTable(data, "data");
+});
+
+channel.bind("SIS-employee-created", function (data) {
     console.log(data);
     addDataToTable(data, "data");
 });
