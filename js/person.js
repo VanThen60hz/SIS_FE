@@ -25,69 +25,122 @@ const fetchDataAndAddToTable = async (pageNumber, pageSize) => {
 
 export const addListToTable = (list, tableId) => {
     const tbody = document.getElementById(tableId);
-    tbody.innerHTML = "";
-    if (tbody) {
-        const headerRow = document.createElement("tr");
-
-        // Thêm các cột từ dữ liệu trong đối tượng đầu tiên của danh sách list
-        Object.keys(list[0]).forEach((key) => {
-            const th = document.createElement("th");
-            th.textContent = key;
-            headerRow.appendChild(th);
-        });
-
-        // Thêm cột "Edit" và "Delete" vào tiêu đề
-        const editTh = document.createElement("th");
-        editTh.textContent = "Edit";
-        headerRow.appendChild(editTh);
-
-        const deleteTh = document.createElement("th");
-        deleteTh.textContent = "Delete";
-        headerRow.appendChild(deleteTh);
-
-        tbody.appendChild(headerRow);
-
-        // Thêm dữ liệu từ danh sách vào bảng
-        list.forEach((item) => {
-            const tr = document.createElement("tr");
-
-            // Thêm các ô dữ liệu từ mỗi item
-            Object.values(item).forEach((value) => {
-                const td = document.createElement("td");
-                td.textContent = value !== null ? value : "";
-                tr.appendChild(td);
-            });
-
-            // Tạo nút "Edit" và "Delete" bọc trong thẻ <a> có class của Bootstrap
-            const editTd = document.createElement("td");
-            const editLink = document.createElement("a");
-            editLink.href = `../EditBoth.html?data=${JSON.stringify(item)}`;
-            editLink.classList.add("btn", "btn-primary"); // Thêm class của Bootstrap
-            editLink.textContent = "Edit";
-            editLink.onclick = () => {
-                // Xử lý sự kiện chỉnh sửa ở đây
-                console.log("Edit button clicked for:", item);
-            };
-            editTd.appendChild(editLink);
-            tr.appendChild(editTd);
-
-            const deleteTd = document.createElement("td");
-            const deleteLink = document.createElement("a");
-            deleteLink.href = "#"; // Đặt href tùy ý
-            deleteLink.classList.add("btn", "btn-danger"); // Thêm class của Bootstrap
-            deleteLink.textContent = "Delete";
-            deleteLink.onclick = () => {
-                // Xử lý sự kiện xóa ở đây
-                console.log("Delete button clicked for:", item);
-            };
-            deleteTd.appendChild(deleteLink);
-            tr.appendChild(deleteTd);
-
-            tbody.appendChild(tr);
-        });
-    } else {
+    if (!tbody) {
         console.error(`Table body with id ${tableId} not found.`);
+        return;
     }
+
+    tbody.innerHTML = "";
+
+    // Create header row
+    const headerRow = document.createElement("tr");
+
+    // Add column headers based on keys of the first item in the list
+    Object.keys(list[0]).forEach((key) => {
+        const th = document.createElement("th");
+        th.textContent = key;
+        headerRow.appendChild(th);
+    });
+
+    // Add "Edit" and "Delete" columns to the header
+    const editTh = document.createElement("th");
+    editTh.textContent = "Edit";
+    headerRow.appendChild(editTh);
+
+    const deleteTh = document.createElement("th");
+    deleteTh.textContent = "Delete";
+    headerRow.appendChild(deleteTh);
+
+    tbody.appendChild(headerRow);
+
+    // Add data rows to the table
+    list.forEach((item) => {
+        const tr = document.createElement("tr");
+
+        // Add cells with data from each item
+        Object.values(item).forEach((value) => {
+            const td = document.createElement("td");
+            td.textContent = value !== null ? value : "";
+            tr.appendChild(td);
+        });
+
+        // Create "Edit" and "Delete" buttons wrapped in <td>
+        const editTd = document.createElement("td");
+        const editLink = document.createElement("a");
+        editLink.href = `../EditBoth.html?data=${JSON.stringify(item)}`;
+        editLink.classList.add("btn", "btn-primary");
+        editLink.textContent = "Edit";
+        editLink.onclick = () => {
+            console.log("Edit button clicked for:", item);
+            // Handle edit logic here
+        };
+        editTd.appendChild(editLink);
+        tr.appendChild(editTd);
+
+        const deleteTd = document.createElement("td");
+        const deleteBtn = document.createElement("button");
+        deleteBtn.classList.add("btn", "btn-danger");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.onclick = () => {
+            const fullNameSpan = document.getElementById("delete-fullname");
+
+            if (fullNameSpan) {
+                const fullName = `${item.firstName} ${item.lastName}`;
+
+                fullNameSpan.textContent = fullName;
+
+                console.log(fullName);
+
+                // Show the delete modal
+                const deleteModal = new bootstrap.Modal(
+                    document.getElementById("deleteModal"),
+                );
+                deleteModal.show();
+
+                // Handle delete confirmation
+                const deleteConfirmBtn =
+                    document.getElementById("confirmDeleteBtn");
+                deleteConfirmBtn.onclick = () => {
+                    console.log("Deleting person:", item);
+                    const myHeaders = new Headers();
+                    myHeaders.append("Content-Type", "application/json");
+
+                    const raw = JSON.stringify({
+                        SQL_Employee_ID: item.SQL_Employee_ID,
+                        mongoDBEmployeeId: item.mongoDBEmployeeId,
+                    });
+
+                    const requestOptions = {
+                        method: "DELETE",
+                        headers: myHeaders,
+                        body: raw,
+                        redirect: "follow",
+                    };
+
+                    fetch("http://localhost:8080/both", requestOptions)
+                        .then((response) => response.text())
+                        .then(async (result) => {
+                            console.log(result);
+                            let pageNumber = 1;
+                            const pageSize = 10;
+
+                            fetchDataAndAddToTable(pageNumber, pageSize);
+                        })
+                        .catch((error) => console.error(error));
+                    // Perform delete action (e.g., make API request)
+
+                    // Close the modal
+                    deleteModal.hide();
+                };
+            } else {
+                console.error("Modal elements not found.");
+            }
+        };
+        deleteTd.appendChild(deleteBtn);
+        tr.appendChild(deleteTd);
+
+        tbody.appendChild(tr);
+    });
 };
 
 let pageNumber = 1;

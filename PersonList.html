@@ -4,11 +4,18 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Admin</title>
+
         <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+            crossorigin="anonymous"
+        />
+        <!-- <link
             type="text/css"
             href="./bootstrap/css/bootstrap.min.css"
             rel="stylesheet"
-        />
+        /> -->
         <link
             type="text/css"
             href="./bootstrap/css/bootstrap-responsive.min.css"
@@ -25,6 +32,12 @@
             href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600"
             rel="stylesheet"
         />
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"
+        ></script>
     </head>
     <body>
         <div class="navbar navbar-fixed-top">
@@ -89,7 +102,7 @@
         <div class="wrapper">
             <div class="container">
                 <div class="row">
-                    <div class="span3">
+                    <div class="12">
                         <div class="sidebar">
                             <ul class="widget widget-menu unstyled">
                                 <li class="active">
@@ -166,7 +179,7 @@
                         <!--/.sidebar-->
                     </div>
                     <!--/.span3-->
-                    <div class="span9">
+                    <div class="span12">
                         <div class="module">
                             <div class="module-head">
                                 <h3>
@@ -174,11 +187,11 @@
                                     <a href="./CreatePerson.html">Create New</a>
                                 </h3>
                             </div>
-                            <div class="module-body table">
+                            <div class="module-body table table-bordered">
                                 <table
                                     cellpadding="0"
                                     cellspacing="0"
-                                    class="datatable-1 table table-bordered table-striped display"
+                                    class="datatable-1 display"
                                     width="100%"
                                     id="data"
                                 ></table>
@@ -205,13 +218,11 @@
                                         background: #fff;
                                         padding: 10px;
                                         border-radius: 10px;
-                                        width: 70px;
                                         text-align: center;
                                     "
                                 >
                                     <a
-                                        class="page-link"
-                                        href="#!"
+                                        class="page-link btn btn-secondary"
                                         aria-label="Previous"
                                     >
                                         <span aria-hidden="true">&laquo;</span>
@@ -226,13 +237,11 @@
                                         background: #fff;
                                         padding: 10px;
                                         border-radius: 10px;
-                                        width: 70px;
                                         text-align: center;
                                     "
                                 >
                                     <a
-                                        class="page-link"
-                                        href="#!"
+                                        class="page-link btn btn-secondary"
                                         aria-label="Next"
                                     >
                                         <span aria-hidden="true">&raquo;</span>
@@ -288,6 +297,53 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Delete modal -->
+            <div
+                class="modal fade"
+                id="deleteModal"
+                tabindex="-1"
+                aria-hidden="true"
+            >
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="tlName">
+                                Delete Person
+                            </h5>
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            ></button>
+                        </div>
+                        <div class="modal-body">
+                            Bạn có chắc là muốn xóa person có tên là
+                            <span
+                                class="text-success"
+                                id="delete-fullname"
+                            ></span>
+                        </div>
+                        <div class="modal-footer">
+                            <button
+                                type="button"
+                                class="btn btn-secondary"
+                                data-bs-dismiss="modal"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="button"
+                                id="confirmDeleteBtn"
+                                class="btn btn-danger"
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!--/.container-->
         </div>
 
@@ -297,6 +353,7 @@
                 rights reserved.
             </div>
         </div>
+
         <script
             src="/Scripts/jquery-1.9.1.min.js"
             type="text/javascript"
@@ -322,9 +379,14 @@
             type="text/javascript"
         ></script>
         <script src="/Scripts/common.js" type="text/javascript"></script>
-        <script type="module" src="./js/person.js"></script>
 
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"
+        ></script>
+        <script type="module" src="./js/person.js"></script>
     </body>
 </html>
